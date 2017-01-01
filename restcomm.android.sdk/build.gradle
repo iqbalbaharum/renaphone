@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '23.0.2'
+
+    // Retrieve build number from properties file, increment and use as versionCode. Finally, store new build number in properties file
+    def versionPropertiesFile = file('restcomm-android-sdk-version.properties')
+    if (versionPropertiesFile.canRead()) {
+        def Properties versionProperties = new Properties()
+        versionProperties.load(new FileInputStream(versionPropertiesFile))
+
+        def version = versionProperties['VERSION_CODE'].toInteger() + 1
+        versionProperties['VERSION_CODE'] = version.toString()
+        versionProperties.store(versionPropertiesFile.newWriter(), null)
+
+        defaultConfig {
+            minSdkVersion 16
+            targetSdkVersion 24
+            versionCode version
+            versionName "1.0.0-BETA4"
+        }
+    }
+    else {
+        throw new GradleException("Could not read file restcomm-android-sdk-version.properties")
+    }
+    /*
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0.0-BETA4"
+    }
+    */
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        shrunk {
+            minifyEnabled true
+            shrinkResources true
+        }
+
+    }
+    sourceSets.main {
+        jni.srcDirs = [] // This prevents the auto generation of Android.mk
+        jniLibs.srcDir 'libs/jniLibs' // This is not necessary unless you have precompiled libraries in your project.
+    }
+}
+
+dependencies {
+    compile files('libs/libjingle_peerconnection_java.jar')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    // This is a dependency for JAIN SIP library (android-jain-sip-ri). Tried to replace it with maven 'org.apache.logging.log4j:log4j:2.6.2' but didn't work so until we update JAIN SIP library
+    // accordingly we 're stuck with this local dependency
+    compile files('libs/log4j-1.2.15.jar')
+    compile 'javax.sip:android-jain-sip-ri:1.2.293'
+    // Provide JAIN SIP with proper Bouncy Castle encryption facilities (although Android seems to support BC, it appears that it has issues)
+    compile 'com.madgag.spongycastle:core:1.54.0.0'
+    compile 'com.madgag.spongycastle:prov:1.54.0.0'
+    compile 'com.madgag.spongycastle:pkix:1.54.0.0'
+}
