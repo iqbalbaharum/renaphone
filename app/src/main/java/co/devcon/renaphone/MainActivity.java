@@ -312,8 +312,8 @@ public class MainActivity extends AppCompatActivity implements RCDeviceListener,
         params.put(RCDevice.ParameterKeys.INTENT_INCOMING_CALL, intent);
         params.put(RCDevice.ParameterKeys.INTENT_INCOMING_MESSAGE, intent);
         params.put(RCDevice.ParameterKeys.SIGNALING_DOMAIN, "rena.devcon.co");
-        params.put(RCDevice.ParameterKeys.SIGNALING_USERNAME, "vader");
-        params.put(RCDevice.ParameterKeys.SIGNALING_PASSWORD, "fuzzylogic123");
+        params.put(RCDevice.ParameterKeys.SIGNALING_USERNAME, "#");
+        params.put(RCDevice.ParameterKeys.SIGNALING_PASSWORD, "#");
         params.put(RCDevice.ParameterKeys.MEDIA_ICE_URL, "https://service.xirsys.com/ice");
         params.put(RCDevice.ParameterKeys.MEDIA_ICE_USERNAME, "atsakiridis");
         params.put(RCDevice.ParameterKeys.MEDIA_ICE_PASSWORD, "4e89a09e-bf6f-11e5-a15c-69ffdcc2b8a7");
